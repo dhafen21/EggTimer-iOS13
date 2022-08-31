@@ -17,25 +17,40 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
     var AudioPlayer: AVAudioPlayer?
     enum sounds { case alarm, cowbell }
     var lastSound: sounds = sounds.cowbell
+    var lastValidTime: Int = 5
+    var editingTime: Bool = false
 
-
-    @IBOutlet weak var BackgroundColor: UIControl!
     @IBOutlet weak var TimerStartValue: UITextField!
+    @IBOutlet weak var InstructionsText: UILabel!
+    @IBOutlet weak var BackgroundColor: UIControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         TimerStartValue.keyboardType = .decimalPad
         TimerStartValue.text = "5"
         TimerStartValue.textAlignment = .center
-        setColors(color: .black)
-        TimerStartValue.textColor = .white
+        resetColors()
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(ViewController.doubleTapped))
+        doubleTap.numberOfTapsRequired = 2
+        BackgroundColor.addGestureRecognizer(doubleTap);
+        
+        let tapOutside = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        view.addGestureRecognizer(tapOutside)
+        UIApplication.shared.isIdleTimerDisabled = true;
+        InstructionsText.text = "Single-tap to start and restart timer \n\n Double-tap to exit the timer \n\n Tap the number \nto edit the countdown length"
+        InstructionsText.adjustsFontSizeToFitWidth = false
+        InstructionsText.lineBreakMode = .byWordWrapping
     }
-    
+
     @IBAction func startTimer(_ sender: Any) {
+        if (editingTime) {
+            return;
+        }
         if (lastSound == sounds.alarm && AudioPlayer != nil) {
             if (AudioPlayer!.isPlaying) {
                 AudioPlayer?.stop()
-                setColors(color: .black)
+                resetColors()
                 TimerStartValue.textColor = .white
                 TimerStartValue.text = String(originalTime ?? 5)
                 return
@@ -89,7 +104,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if (lastSound == sounds.alarm) {
-            setColors(color: .black)
+            resetColors()
             TimerStartValue.text = String(originalTime ?? 5)
             TimerStartValue.textColor = .white
         }
@@ -98,6 +113,38 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
     func setColors(color: UIColor) {
         view.backgroundColor = color
         TimerStartValue.backgroundColor = color
+        InstructionsText.textColor = color
+    }
+    
+    func resetColors() {
+        setColors(color: .black)
+        InstructionsText.textColor = .white
+    }
+    
+    @objc func doubleTapped() {
+        resetColors()
+        TimerStartValue.text = String(lastValidTime)
+        TimerStartValue.textColor = .white
+        timer.invalidate()
+        TimerStartValue.isEnabled = true
+        print("hell yeah brother");
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @IBAction func onTimeFieldFocus(_ sender: Any) {
+        lastValidTime = Int(TimerStartValue.text!) ?? 5
+        TimerStartValue.text = "";
+        editingTime = true
+    }
+    @IBAction func onTimerFieldLoseFocus(_ sender: Any) {
+        if (TimerStartValue.text != nil && TimerStartValue.text! == "") {
+            TimerStartValue.text = String(lastValidTime)
+        }
+        lastValidTime = Int(TimerStartValue.text!) ?? 5
+        editingTime = false
     }
 }
 

@@ -22,19 +22,33 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="100"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="onTimeFieldFocus:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="Vif-D7-hBg"/>
+                                    <action selector="onTimerFieldLoseFocus:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="sjr-yd-JP9"/>
+                                </connections>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rAy-60-v3D">
+                                <rect key="frame" x="181.5" y="225" width="51" height="30"/>
+                                <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Ih3-dR-NgI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="G9t-kD-kzL"/>
-                            <constraint firstItem="Ih3-dR-NgI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="uXR-9I-sp0"/>
+                            <constraint firstItem="Ih3-dR-NgI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="KGM-WF-HAe"/>
+                            <constraint firstItem="rAy-60-v3D" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-208" id="L2H-CD-3aj"/>
+                            <constraint firstItem="rAy-60-v3D" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sBs-vH-rdI"/>
+                            <constraint firstItem="Ih3-dR-NgI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vqD-Fw-RTt"/>
                         </constraints>
                         <connections>
-                            <action selector="startTimer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QHb-kY-zRz"/>
+                            <action selector="startTimer:" destination="BYZ-38-t0r" eventType="touchDown" id="gEz-uM-RBH"/>
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="BackgroundColor" destination="8bC-Xf-vdC" id="QDo-a2-rRp"/>
+                        <outlet property="InstructionsText" destination="rAy-60-v3D" id="hIH-Uv-UXJ"/>
                         <outlet property="TimerStartValue" destination="Ih3-dR-NgI" id="jeM-7R-rAD"/>
                     </connections>
                 </viewController>
